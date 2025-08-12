@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.idea/.idea.TodoApp/.idea
+/.vs
+/bin
+/obj
+/TodoApp.csproj.user
