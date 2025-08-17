@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,5 +32,19 @@ public sealed partial class Home : Page
     public Home()
     {
         InitializeComponent();
+    }
+
+    private void AddTodoButton_Click(object sender, RoutedEventArgs e)
+    {
+        _items.Add(AddTodoInput.Text);
+        AddTodoInput.Text = string.Empty;
+    }
+
+    private void AddTodoInput_KeyUp(object sender, KeyRoutedEventArgs e)
+    {
+        if(e.Key == VirtualKey.Enter)
+        {
+            AddTodoButton_Click(new(), new());
+        }
     }
 }
