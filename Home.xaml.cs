@@ -51,13 +51,13 @@ public sealed partial class Home : Page
     {
         if(e.Key == VirtualKey.Enter)
         {
-            AddTodoButton_Click(new(), new());
+            AddTodoButton_Click(sender, e);
         }
     }
 
     private void DeleteTodoButton_Click(object sender, RoutedEventArgs e)
     {
-        if(sender is Button deleteButton && deleteButton.DataContext is Todo item)
+        if(sender is Button { DataContext: Todo item })
         {
             _items.Remove(item);
         }
@@ -67,12 +67,10 @@ public sealed partial class Home : Page
 public partial class Todo : ObservableObject
 {
     [ObservableProperty]
-    private string title = string.Empty;
+    private string _title = string.Empty;
 
     [ObservableProperty]
-    private bool done;
-
-    public Todo() { }
+    private bool _done;
 
     public Todo(string title)
     {
