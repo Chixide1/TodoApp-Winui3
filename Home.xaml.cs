@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -14,6 +15,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
+using Windows.UI.Text;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,8 +27,13 @@ namespace TodoApp;
 /// </summary>
 public sealed partial class Home : Page
 {
-    private readonly ObservableCollection<string> _items = [
-        "Clean House", "Do Laundry", "Call Mom", "Call Dad", "Call Joe"
+    private readonly ObservableCollection<Todo> _items = [
+        new("Morning workout"),
+        new("Check emails"),
+        new("Project task"),
+        new("Grocery shopping"),
+        new("Read or learn"),
+        new("Evening reflection")
     ];
 
     public Home()
@@ -36,7 +43,7 @@ public sealed partial class Home : Page
 
     private void AddTodoButton_Click(object sender, RoutedEventArgs e)
     {
-        _items.Add(AddTodoInput.Text);
+        _items.Add(new(AddTodoInput.Text));
         AddTodoInput.Text = string.Empty;
     }
 
@@ -46,5 +53,52 @@ public sealed partial class Home : Page
         {
             AddTodoButton_Click(new(), new());
         }
+    }
+
+    private void DeleteTodoButton_Click(object sender, RoutedEventArgs e)
+    {
+        if(sender is Button deleteButton && deleteButton.DataContext is Todo item)
+        {
+            _items.Remove(item);
+        }
+    }
+}
+
+public partial class Todo : ObservableObject
+{
+    [ObservableProperty]
+    private string title = string.Empty;
+
+    [ObservableProperty]
+    private bool done;
+
+    public Todo() { }
+
+    public Todo(string title)
+    {
+        Title = title;
+    }
+}
+
+public class BoolToStrikethroughConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if(value is bool done)
+        {
+            return done ? TextDecorations.Strikethrough : TextDecorations.None;
+        }
+
+        return value;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        if(value is TextDecorations textDecorations)
+        {
+            return textDecorations == TextDecorations.Strikethrough;
+        }
+
+        return value;
     }
 }

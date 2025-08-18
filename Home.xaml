@@ -9,6 +9,10 @@
     mc:Ignorable="d"
     >
 
+    <Page.Resources>
+        <local:BoolToStrikethroughConverter x:Key="BoolToStrikethroughConverter" />
+    </Page.Resources>
+
     <Grid Padding="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -36,7 +40,11 @@
                 />
         </Grid>
 
-        <ListView Grid.Row="1" ItemsSource="{x:Bind _items}">
+        <ListView
+            Grid.Row="1"
+            ItemsSource="{x:Bind _items}"
+            SelectionMode="None"
+            >
 
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
@@ -45,9 +53,32 @@
             </ListView.ItemContainerStyle>
 
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
-                    <Grid Padding="0,15">
-                        <TextBlock Text="{x:Bind}" />
+                <DataTemplate x:DataType="local:Todo">
+                    <Grid Padding="0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            IsChecked="{x:Bind Done, Mode=TwoWay}"
+                            >
+                            <TextBlock
+                                Margin="10,0,0,0"
+                                Text="{x:Bind Title}"
+                                TextDecorations="{x:Bind Done, Converter={StaticResource BoolToStrikethroughConverter}, Mode=OneWay}"
+                                />
+                        </CheckBox>
+                        <Button
+                            x:Name="DeleteTodoButton"
+                            Grid.Column="1"
+                            Click="DeleteTodoButton_Click"
+                            Style="{StaticResource AlternateCloseButtonStyle}"
+                            >
+                            <SymbolIcon Symbol="Clear" />
+                        </Button>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
