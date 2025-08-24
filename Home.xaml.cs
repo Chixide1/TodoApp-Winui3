@@ -31,9 +31,9 @@ public sealed partial class Home : Page
         new("Morning workout"),
         new("Check emails"),
         new("Project task"),
-        new("Grocery shopping"),
-        new("Read or learn"),
-        new("Evening reflection")
+        new("Grocery shopping") {Done = true},
+        new("Read or learn") {Done = true},
+        new("Evening reflection") { Done = true }
     ];
 
     public Home()
@@ -95,6 +95,29 @@ public class BoolToStrikethroughConverter : IValueConverter
         if(value is TextDecorations textDecorations)
         {
             return textDecorations == TextDecorations.Strikethrough;
+        }
+
+        return value;
+    } 
+}
+
+public class BoolToOpacityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value is bool done)
+        {
+            return done ? 0.5 : 1;
+        }
+
+        return value;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        if (value is double opacity)
+        {
+            return opacity == 0.5;
         }
 
         return value;

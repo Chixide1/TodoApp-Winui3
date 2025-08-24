@@ -11,6 +11,7 @@
 
     <Page.Resources>
         <local:BoolToStrikethroughConverter x:Key="BoolToStrikethroughConverter" />
+        <local:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
     </Page.Resources>
 
     <Grid Padding="30">
@@ -66,8 +67,10 @@
                             IsChecked="{x:Bind Done, Mode=TwoWay}"
                             >
                             <TextBlock
+                                VerticalAlignment="Center"
                                 Margin="10,0,0,0"
                                 Text="{x:Bind Title}"
+                                Opacity="{x:Bind Done, Converter={StaticResource BoolToOpacityConverter}, Mode=OneWay}"
                                 TextDecorations="{x:Bind Done, Converter={StaticResource BoolToStrikethroughConverter}, Mode=OneWay}"
                                 />
                         </CheckBox>
